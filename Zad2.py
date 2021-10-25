@@ -43,11 +43,13 @@ stack.push(3)
 stack.push(10)
 stack.push(1)
 
-# print(stack)
+print('\n\nStos po pushnieciu 3, 10 i 1:\n')
+print(stack)
 assert stack._storage.len() == 3
 
 top_value = stack.pop()
-# print(stack)
+print('Stos po usunieciu elementu na szczycie:\n')
+print(stack)
 assert str(top_value) == '1'
 
 assert stack._storage.len() == 2

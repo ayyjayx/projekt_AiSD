@@ -35,12 +35,12 @@ assert queue._storage.len() == 0
 queue.enqueue('klient1')
 queue.enqueue('klient2')
 queue.enqueue('klient3')
-print(queue)
+print('Kolejka po dodaniu 3 klientow:\n', queue)
 
 assert str(queue) == 'klient1, klient2, klient3'
 
 client_first = queue.dequeue()
-print(queue)
+print('Kolejka po osbluzeniu pierwszego klienta:\n', queue)
 
 assert str(client_first) == 'klient1'
 assert str(queue) == 'klient2, klient3'
