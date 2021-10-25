@@ -1,4 +1,3 @@
-import Zad1
 from Zad1 import LinkedList
 import Zad2
 from typing import Any
@@ -10,7 +9,7 @@ class Queue:
 
     def __init__(self):
         self._storage = LinkedList()
-        Zad1.LinkedList.__init__(self)
+        LinkedList.__init__(self)
 
     def __str__(self):
         node = self._storage.head
