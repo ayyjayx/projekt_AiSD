@@ -1,0 +1,142 @@
+from typing import Any, Callable
+
+
+class BinaryNode:
+
+    def __init__(self, value):
+        self.left_child = None
+        self.right_child = None
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+    def show_tree(self, func_nr):
+        lista = []
+
+        def dodaj(node: 'BinaryNode'):
+            lista.append(node.value)
+        if func_nr == "1":
+            self.traverse_in_order(dodaj)
+        elif func_nr == "2":
+            self.traverse_post_order(dodaj)
+        elif func_nr == "3":
+            self.traverse_pre_order(dodaj)
+        return lista
+
+    def add_left_child(self, value: Any):
+        add_node = BinaryNode(value)
+        self.left_child = add_node
+
+    def add_right_child(self, value: Any):
+        add_node = BinaryNode(value)
+        self.right_child = add_node
+
+    def is_leaf(self):
+        if self.left_child is None and self.right_child is None:
+            return True
+        else:
+            return False
+
+    def traverse_in_order(self, visit: Callable[[Any], None]):
+        if self.left_child is not None:
+            self.left_child.traverse_in_order(visit)
+        visit(self)
+        if self.right_child is not None:
+            self.right_child.traverse_in_order(visit)
+
+    def traverse_post_order(self, visit: Callable[[Any], None]):
+        if self.left_child is not None:
+            self.left_child.traverse_post_order(visit)
+        if self.right_child is not None:
+            self.right_child.traverse_post_order(visit)
+        visit(self)
+
+    def traverse_pre_order(self, visit: Callable[[Any], None]):
+        visit(self)
+        if self.left_child is not None:
+            self.left_child.traverse_pre_order(visit)
+        if self.right_child is not None:
+            self.right_child.traverse_pre_order(visit)
+
+    def graphic_tree(self, indent=""):
+        right_tree = self.right_child.graphic_tree(indent + "    ") if self.right_child else ""
+        left_tree = self.left_child.graphic_tree(indent + "    ") if self.left_child else ""
+        return right_tree + "{}{}\n".format(indent, str(self.value)) + left_tree
+
+
+class BinaryTree:
+    def __init__(self, value):
+        self.left_child = None
+        self.right_child = None
+        self.root = BinaryNode(value)
+        self.value = value
+
+    def traverse_in_order(self, visit: Callable[[Any], None]):
+        self.root.traverse_in_order(visit)
+
+    def traverse_post_order(self, visit: Callable[[Any], None]):
+        self.root.traverse_post_order(visit)
+
+    def traverse_pre_order(self, visit: Callable[[Any], None]):
+        self.root.traverse_pre_order(visit)
+
+    def show_tree(self, x):
+        return self.root.show_tree(x)
+
+    def show(self):
+        return self.root.graphic_tree()
+
+    def bottom_line(self):
+        array = []
+
+        def bottom_view(node: 'BinaryNode'):
+            if node.left_child:
+                current = node.left_child
+                if current.right_child is None:
+                    array.append(node.value)
+            elif node.right_child:
+                current = node.right_child
+                if current.left_child is None:
+                    array.append(node.value)
+            else:
+                array.append(node.value)
+        self.root.traverse_in_order(bottom_view)
+        return array
+
+
+tree = BinaryTree(10)
+tree.root.add_left_child(9)
+tree.root.add_right_child(2)
+tree.root.left_child.add_left_child(1)
+tree.root.left_child.add_right_child(3)
+tree.root.right_child.add_left_child(4)
+tree.root.right_child.add_right_child(6)
+
+tree2 = BinaryTree(1)
+tree2.root.add_left_child(2)
+tree2.root.add_right_child(3)
+tree2.root.left_child.add_left_child(4)
+tree2.root.left_child.add_right_child(5)
+tree2.root.right_child.add_right_child(7)
+tree2.root.left_child.left_child.add_left_child(8)
+tree2.root.left_child.left_child.add_right_child(9)
+
+print(tree.root.right_child)
+print(tree.root)
+print(tree.root.right_child.is_leaf())
+print(tree.root.right_child.right_child.is_leaf())
+print(tree.show())
+    #   w metodzie show_tree nalezy wpisac odpowiednia liczbe dla danej metody traverse
+    #   1 - in_order, 2 - post_order, 3 - pre_order
+print(tree.root.show_tree("1"))
+print(tree.show_tree("2"))
+
+print(tree2.show())
+print(tree2.bottom_line())
+
+assert tree.root.value == 10
+assert tree.root.right_child.value == 2
+assert tree.root.right_child.is_leaf() is False
+assert tree.root.left_child.left_child.value == 1
+assert tree.root.left_child.left_child.is_leaf() is True
